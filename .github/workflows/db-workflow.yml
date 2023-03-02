@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository to Github Workspace
-        uses: actions/checkout@test
+        uses: actions/checkout@v3
 
       - name: Image build
         shell: bash
