@@ -1,0 +1,30 @@
+name: Database Pipeline
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+      - dev
+    types:
+      - opened
+
+concurrency:
+  group: "${{ github.workflow }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}"
+  cancel-in-progress: true
+
+jobs:
+  test_docker_image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Image build
+        uses: actions/checkout@v3
+        run: docker build -f Dockerfile -t wander/postgres-db .
+
+      - name: Build and run container
+        shell: bash
+        run: |
+          docker run -d --name test-db wander/postgres-db
+          echo "Waiting for init scripts to complete"
+          sleep 30
+          docker exec test-db pg_isready -d wander-db || {echo "::error unsuccessful container build with " && docker logs --tail 50 test-db && exit 1; }
