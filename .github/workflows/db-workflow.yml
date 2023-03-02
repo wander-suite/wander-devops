@@ -3,6 +3,13 @@ name: Database Pipeline
 on:
   workflow_dispatch:
   workflow_call:
+    secrets:
+      DBNAME:
+        required: true
+      DBPASS:
+        required: true
+      DBUSER:
+        required: true
   pull_request:
     branches:
       - main
@@ -25,6 +32,7 @@ jobs:
         shell: bash
         run: |
           docker build -f Dockerfile -t wander/postgres-db .
+        
 
       - name: Build and run container
         shell: bash
