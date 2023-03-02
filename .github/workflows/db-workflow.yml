@@ -18,8 +18,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Image build
-        uses: actions/checkout@v3
-        run: docker build -f Dockerfile -t wander/postgres-db .
+        shell: bash
+        run: |
+          docker build -f Dockerfile -t wander/postgres-db .
 
       - name: Build and run container
         shell: bash
