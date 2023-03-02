@@ -31,5 +31,5 @@ jobs:
         run: |
           docker run -d --name test-db wander/postgres-db
           echo "Waiting for init scripts to complete"
-          sleep 30
-          docker exec test-db pg_isready -d wander-db || {echo "::error unsuccessful container build with " && docker logs --tail 50 test-db && exit 1; }
+          sleep 5
+          docker exec test-db pg_isready -d wander-db || { echo "::error unsuccessful container build with " && docker logs --tail 50 test-db && exit 1; }
