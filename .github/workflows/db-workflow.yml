@@ -30,11 +30,7 @@ jobs:
 
       - name: Build container for DB
         shell: bash
-        run: |
-          POSTGRES_DB=${{ secrets.DBNAME }} 
-          POSTGRES_USER=${{ secrets.DBUSER }} 
-          POSTGRES_PASSWORD=${{ secrets.DBPASS }} 
-          docker compose -f compose.yml up
+        run: POSTGRES_DB=${{ secrets.DBNAME }} POSTGRES_USER=${{ secrets.DBUSER }} POSTGRES_PASSWORD=${{ secrets.DBPASS }} docker compose -f compose.yml up
         
       - name: Verify that database is valid
         shell: bash
