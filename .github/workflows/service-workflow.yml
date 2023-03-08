@@ -25,9 +25,20 @@ concurrency:
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node-version: [16.x, 18.x]
+
     steps:
       - name: Checkout repository to Github Workspace
         uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
 
       - name: Run Tests
         shell: bash
@@ -38,6 +49,11 @@ jobs:
   code-scan:
     name: CodeQL Analysis
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        language:
+          - javascript
+
     steps:
       - name: Checkout repository to Github Workspace
         uses: actions/checkout@v3
@@ -45,7 +61,7 @@ jobs:
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v2
         with:
-          languages: javascript
+          languages: ${{ matrix.language }}
 
       - name: Autobuild
         uses: github/codeql-action/autobuild@v2
