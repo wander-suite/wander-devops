@@ -10,6 +10,9 @@ on:
     types:
       - opened
   push:
+    branches:
+      - main
+      - dev
 
 concurrency:
   group: "${{ github.workflow }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}"
@@ -41,6 +44,7 @@ jobs:
 
   code-scan:
     name: CodeQL Analysis
+    needs: test
     runs-on: ubuntu-latest
     strategy:
       matrix:
