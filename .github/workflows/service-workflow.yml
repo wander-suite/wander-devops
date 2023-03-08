@@ -9,6 +9,10 @@ on:
       - dev
     types:
       - opened
+  push:
+    branches:
+      - main
+      - dev
 
 jobs:
   test:
