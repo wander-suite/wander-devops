@@ -3,13 +3,6 @@ name: Microservice Pipeline
 on:
   workflow_dispatch:
   workflow_call:
-    secrets:
-      DBNAME:
-        required: true
-      DBPASS:
-        required: true
-      DBUSER:
-        required: true
   pull_request:
     branches:
       - main
