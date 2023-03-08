@@ -9,10 +9,6 @@ on:
       - dev
     types:
       - opened
-  push:
-    branches:
-      - main
-      - dev
 
 concurrency:
   group: "${{ github.workflow }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}"
