@@ -10,6 +10,8 @@ on:
         required: true
       DBUSER:
         required: true
+      TAG_VERSION: 
+        required: true
   pull_request:
     branches:
       - main
