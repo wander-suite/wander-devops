@@ -10,6 +10,12 @@ on:
         required: true
       DBUSER:
         required: true
+      DOCKER_USER:
+        required: true
+      DOCKER_TOKEN:
+        required: true
+      TAG_VERSION:
+        required: true
   pull_request:
     branches:
       - main
@@ -28,13 +34,28 @@ jobs:
       - name: Checkout repository to Github Workspace
         uses: actions/checkout@v3
 
+      - name: Login to Dockerhub
+        uses: docker/login-action@v2.1.0
+        with:
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+        env:
+          DOCKER_USER: ${{ secrets.DOCKER_USER}}
+          DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN}}
+
       - name: Build container for DB
         shell: bash
         run: POSTGRES_DB=${{ secrets.DBNAME }} POSTGRES_USER=${{ secrets.DBUSER }} POSTGRES_PASSWORD=${{ secrets.DBPASS }} docker compose -f compose.yml up --detach
-        
+
       - name: Verify that database is valid
         shell: bash
         run: |
           echo "Waiting for init scripts to complete"
           sleep 5
           docker exec wander-db-test pg_isready -d ${{ secrets.DBNAME }} || { echo "::error unsuccessful container build with " && docker logs --tail 50 wander-db-test && exit 1; }
+      
+      - name: Pushing built image to Dockerhub
+        shell: bash
+        run: docker push wander_suite/db:$DOCKER_TAG
+        
+
