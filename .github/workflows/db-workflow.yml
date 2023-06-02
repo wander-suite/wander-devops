@@ -36,7 +36,7 @@ jobs:
 
       - name: Login to Dockerhub
         shell: bash
-        run: docker login --username ${{ secrets.DOCKER_USER }} --password ${{ secrets.DOCKER_TOKEN }}"
+        run: docker login --username ${{ secrets.DOCKER_USER }} --password ${{ secrets.DOCKER_TOKEN }}
 
       - name: Build container for DB
         shell: bash
