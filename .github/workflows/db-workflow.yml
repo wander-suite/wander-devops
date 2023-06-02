@@ -10,15 +10,11 @@ on:
         required: true
       DBUSER:
         required: true
-<<<<<<< HEAD
       DOCKER_USER:
         required: true
       DOCKER_TOKEN:
         required: true
       TAG_VERSION:
-=======
-      TAG_VERSION: 
->>>>>>> 6e763bc9e0a9538fbb2c57cc73ea88cc9f7ca1f5
         required: true
   pull_request:
     branches:
