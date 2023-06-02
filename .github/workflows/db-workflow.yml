@@ -51,6 +51,6 @@ jobs:
       
       - name: Pushing built image to Dockerhub
         shell: bash
-        run: docker push wander_suite/db:${{ secrets.TAG_VERSION }}
+        run: docker push wander_suite/db:test
         
 
