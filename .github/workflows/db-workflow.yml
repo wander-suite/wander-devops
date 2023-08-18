@@ -34,10 +34,6 @@ jobs:
       - name: Checkout repository to Github Workspace
         uses: actions/checkout@v3
 
-      # - name: Login to Dockerhub
-      #   shell: bash
-      #   run: docker login --username ${{ secrets.DOCKER_USER }} --password ${{ secrets.DOCKER_TOKEN }}
-
       - name: Build container for DB
         shell: bash
         run: POSTGRES_DB=${{ secrets.DBNAME }} POSTGRES_USER=${{ secrets.DBUSER }} POSTGRES_PASSWORD=${{ secrets.DBPASS }} docker compose -f docker-compose.yml up --detach
