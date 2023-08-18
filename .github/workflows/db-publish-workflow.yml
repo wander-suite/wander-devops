@@ -1,6 +1,21 @@
-name: Database Pipeline
+name: Publish Database Pipeline
 
 on:
+  workflow_dispatch:
+  workflow_call:
+    secrets:
+      DBNAME:
+        required: true
+      DBPASS:
+        required: true
+      DBUSER:
+        required: true
+      DOCKER_USER:
+        required: true
+      DOCKER_TOKEN:
+        required: true
+      TAG_VERSION:
+        required: true
   pull_request:
     types:
       - closed

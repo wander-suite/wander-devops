@@ -1,4 +1,4 @@
-name: Database Pipeline
+name: Test Database Pipeline
 
 on:
   workflow_dispatch:
