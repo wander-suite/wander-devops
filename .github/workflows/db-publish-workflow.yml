@@ -44,7 +44,7 @@ jobs:
         run: |
           echo "Waiting for init scripts to complete"
           sleep 5
-          docker exec wander-db-test pg_isready -d ${{ secrets.DBNAME }} || { echo "::error unsuccessful container build with " && docker logs --tail 50 wander-db && exit 1; }
+          docker exec wander-db pg_isready -d ${{ secrets.DBNAME }} || { echo "::error unsuccessful container build with " && docker logs --tail 50 wander-db && exit 1; }
 
       - name: Pushing built image to Dockerhub
         shell: bash
