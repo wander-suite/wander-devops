@@ -1,36 +1,25 @@
 name: Database Pipeline
 
 on:
-  workflow_dispatch:
-  workflow_call:
-    secrets:
-      DBNAME:
-        required: true
-      DBPASS:
-        required: true
-      DBUSER:
-        required: true
-      DOCKER_USER:
-        required: true
-      DOCKER_TOKEN:
-        required: true
-      TAG_VERSION:
-        required: true
   pull_request:
-    branches:
-      - main
-      - dev
     types:
-      - opened
+      - closed
 
 concurrency:
   group: "${{ github.workflow }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}"
   cancel-in-progress: true
 
 jobs:
-  test_docker_image:
+  publish_docker_image:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository to Github Workspace
+        uses: actions/checkout@v3
+
+      - name: Login to Dockerhub
+        shell: bash
+        run: docker login --username ${{ secrets.DOCKER_USER }} --password ${{ secrets.DOCKER_TOKEN }}
+
       - name: Build container for DB
         shell: bash
         run: POSTGRES_DB=${{ secrets.DBNAME }} POSTGRES_USER=${{ secrets.DBUSER }} POSTGRES_PASSWORD=${{ secrets.DBPASS }} docker compose -f compose.yml up --detach
@@ -41,3 +30,7 @@ jobs:
           echo "Waiting for init scripts to complete"
           sleep 5
           docker exec wander-db-test pg_isready -d ${{ secrets.DBNAME }} || { echo "::error unsuccessful container build with " && docker logs --tail 50 wander-db-test && exit 1; }
+
+      - name: Pushing built image to Dockerhub
+        shell: bash
+        run: docker push wandersuite/wander
