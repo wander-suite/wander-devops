@@ -28,6 +28,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
         os: [ubuntu-latest]
@@ -48,6 +49,10 @@ jobs:
         run: |
           npm i
           NODE_ENV=ci npm run ci-test
+          env:
+            DBNAME: ${{ secrets.DBNAME }}
+            DBPASS: ${{ secrets.DBPASS }}
+            DBUSER: ${{ secrets.DBUSER }}
 
   code-scan:
     name: CodeQL Analysis
