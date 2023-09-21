@@ -3,6 +3,17 @@ name: Microservice Pipeline
 on:
   workflow_dispatch:
   workflow_call:
+    secrets:
+      DBNAME:
+        required: true
+      DBPASS:
+        required: true
+      DBUSER:
+        required: true
+      DOCKER_USER:
+        required: true
+      DOCKER_TOKEN:
+        required: true
   pull_request:
     branches:
       - main
@@ -36,7 +47,7 @@ jobs:
         shell: bash
         run: |
           npm i
-          NODE_ENV=dev npm run test
+          NODE_ENV=ci npm run ci-test
 
   code-scan:
     name: CodeQL Analysis
